@@ -131,22 +131,22 @@
           <!-- Example of a grid of photos -->
           <div class="row justify-content-center gx-2 my-3">
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-1.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-1.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-2.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-2.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-3.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-3.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-4.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-4.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-5.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-5.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
             <div class="col-4 my-1">
-              <img src="assets/sample-images/desk-6.jpg" class="img-fluid" alt="desk">
+              <img src="assets/sample-images/desk-6.jpg" class="img-fluid" alt="desk" data-bs-toggle="modal" data-bs-target="#exampleModal">
             </div>
           </div>
 
@@ -222,8 +222,7 @@
     
     <!-- Example of a Graphics Scrolling Section -->
     <div class="scroll-graphic container-fluid position-relative">
-      
-        <div class="image-holder"></div>
+    
         
         <div class="row justify-content-center d-flex flex-column align-items-center">
           <div class="col-10 col-sm-6 col-md-4">
@@ -270,13 +269,25 @@
       </nav>    
     </footer>
     
+    <!-- POPUP holder. Do not remove or edit. You can remove if you have no popups on your project -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+      </div>
+    </div>
     
     
     
-    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.scrollstory.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="js/d3-5.9.7.min.js"></script>
+    
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/d3-5.9.7.min.js"></script>
+    <script src="js/jquery-scroll-swap.js"></script>
     <script>
       jQuery(document).ready(function($){
 
@@ -284,22 +295,30 @@
 
         //ignore these four lines of code.
         const spread_of_items = 200; // how spread apart items are.
-        const speed = 250; //speed of transition in milliseconds
         const num_of_items = $(".scroll-graphic").children().length;
         $(".scroll-graphic").children().height(spread_of_items + 'vh');
         $(".image-holder").height(((num_of_items - 1) * spread_of_items) + 'vh' );
         
+        $(".scroll-graphic").scrollSwap();
         
-        $(".scroll-graphic").scrollStory({
-          triggerOffset: $(window).height() * .75 //how many pixels from top of screen to trigger animation for each box
-        });
         
-        $(".scroll-graphic").on('itemfocus', (e,d) =>{
-          $(".image-holder").stop().animate({opacity:0}, speed, function(done){
-            $(this).css('background-image', 'url(' + d.el.data('image') + ')');
-            $(this).animate({opacity:1}, speed);
-          })
-        }); 
+        //modal (also known as pop-up)
+        
+        //for youtube videos, neeed to modify a bit
+        //https://stackoverflow.com/questions/18622508/bootstrap-3-and-youtube-in-modal
+        
+        const exampleModal = document.getElementById('exampleModal')
+        
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+          let button = event.relatedTarget;
+          let image = button.getAttribute('src');
+          let caption = button.getAttribute('alt');
+
+          var modalBody = exampleModal.querySelector('.modal-body')
+
+          modalBody.innerHTML = '<img src="' + image + '" class="img-fluid"><br><small>' + caption + '</small>';
+        })
+
 
 
 
